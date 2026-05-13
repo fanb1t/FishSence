@@ -6,7 +6,7 @@
 
 แหล่งบริบทที่ใช้:
 
-- private local knowledge base: `meta/index.md`
+- `meta/index.md`
 - `wiki/sources/projects/FishSense SRS v1.1 - Source Summary.md`
 - `wiki/entities/projects/FishSense.md`
 - `raw/sources/projects/FishSense_SRS_v1.1.docx`
@@ -14,7 +14,9 @@
 
 ## เป้าหมาย Phase 1
 
-Phase 1 คือระบบประเมินความเสี่ยงก่อนออกเรือชายฝั่ง โดยยังไม่เริ่มจาก AI และยังไม่เน้นทำนายปลา เป้าหมายคือให้ผู้ใช้ตอบคำถามให้ได้เร็วว่า "วันนี้หรือพรุ่งนี้ควรออกเรือไหม และต้องระวังอะไร"
+Phase 1 คือระบบประเมินความเสี่ยงก่อนออกเรือชายฝั่ง โดยยังไม่เริ่มจาก AI และยังไม่เน้นทำนายปลา เป้าหมายคือให้ผู้ใช้เปิดเว็บ เลือกพื้นที่หรือใช้พิกัดปัจจุบัน แล้วตอบคำถามให้ได้เร็วว่า "วันนี้หรือพรุ่งนี้ควรออกเรือไหม และต้องระวังอะไร"
+
+Phase 1 แรกไม่ต้องมีระบบสมัครสมาชิกหรือ login ผู้ใช้ควรดูข้อมูลสภาพอากาศทะเล น้ำขึ้นลง กระแสน้ำ และความเสี่ยงตามบริเวณที่อยู่ได้ทันที
 
 ผลลัพธ์หลักที่ต้องมี:
 
@@ -35,10 +37,11 @@ Phase 1 คือระบบประเมินความเสี่ยง
 - Frontend: React, Vite, TypeScript, Tailwind CSS
 - Backend/BaaS: Supabase
 - Database: Supabase PostgreSQL
-- Auth: Supabase Auth
 - Server-side integration: Supabase Edge Functions
 - Scheduled fetch: Supabase Edge Function + `pg_cron` ทุก 3 ชั่วโมง
 - Hosting: Vercel สำหรับ frontend, Supabase Cloud สำหรับ backend
+
+หมายเหตุ Phase 1: ยังไม่ออกแบบ Auth เป็น requirement หลัก ใช้ Supabase สำหรับฐานข้อมูล, Edge Functions และ scheduled fetch ก่อน ส่วน Supabase Auth ค่อยกลับมาออกแบบเมื่อเริ่มต้องบันทึกข้อมูลส่วนตัวหรือ favorite zone แบบผูกกับผู้ใช้
 
 สถานะ repo ตอนนี้:
 
@@ -110,14 +113,15 @@ Hard stop:
 
 ตารางที่ควรมีตั้งแต่ Phase 1:
 
-- `profiles`: ข้อมูลผู้ใช้, ประเภทเรือ, ท่าเรือหลัก, พิกัดหลัก
 - `coastal_zones`: พื้นที่ชายฝั่ง/ท่าเรือ/จุดประจำ
 - `weather_snapshots`: snapshot จาก Open-Meteo และคะแนนที่คำนวณได้
 - `tide_snapshots`: ข้อมูลน้ำขึ้นลง น้ำเกิด/น้ำตาย กระแสน้ำ
 - `risk_assessments`: ผลประเมิน Safe Score รายช่วงเวลา
+- `data_sources` หรือ `app_config`: เก็บ config แหล่งข้อมูล, threshold และ fallback ที่ frontend ไม่ควร hardcode
 
 ตารางที่เตรียมไว้สำหรับ Phase 2/3:
 
+- `profiles`
 - `trip_logs`
 - `fish_hotspot_logs`
 - `restricted_areas`
@@ -191,12 +195,13 @@ Hard stop:
    - แสดงสรุป 7 วัน
    - แสดงเวลาข้อมูลล่าสุดและ disclaimer
 
-7. ทำ Auth แบบพอดีกับ MVP
+7. ออกแบบการใช้งานแบบไม่ต้องสมัครสมาชิก
 
-   - ผู้ใช้ไม่ login ดูอากาศได้
-   - login แล้วจึงบันทึก favorite zone หรือข้อมูลส่วนตัว
-   - Magic Link เป็น Must Have
-   - SMS OTP เป็น Should Have
+   - ผู้ใช้เปิดเว็บแล้วดูผลได้ทันที
+   - ใช้ browser geolocation หรือเลือกพื้นที่ชายฝั่งจากรายการ
+   - ถ้าต้องจำจุดล่าสุด ให้เก็บใน local storage ฝั่งเครื่องผู้ใช้ก่อน
+   - ยังไม่เก็บข้อมูลส่วนตัวหรือบัญชีผู้ใช้ใน Phase 1 แรก
+   - Auth, profile และ favorite zone แบบผูก user ให้เลื่อนไปออกแบบหลัง dashboard/weather risk ใช้งานได้จริง
 
 ## ความรู้ที่ต้องมีก่อนเริ่ม
 
@@ -212,10 +217,10 @@ Frontend:
 Backend/Supabase:
 
 - PostgreSQL schema design
-- Row Level Security และ policy ต่อ user/owner
-- Supabase Auth และ Magic Link
 - Edge Functions สำหรับ server-side API call
 - `pg_cron` หรือ scheduled job สำหรับ refresh data ทุก 3 ชั่วโมง
+- การออกแบบ public read data อย่างปลอดภัย เพราะ Phase 1 แรกยังไม่มี login
+- Row Level Security และ Supabase Auth ยังควรรู้ไว้สำหรับ Phase 2 หรือเมื่อเริ่มเก็บข้อมูลผู้ใช้
 
 Domain:
 
@@ -228,14 +233,17 @@ Domain:
 
 Legal/privacy:
 
-- ถ้าเก็บพิกัดหรือข้อมูลผู้ใช้ ต้องมี consent และ Privacy Policy
-- ข้อมูลผู้ใช้ต้องอยู่ใต้ RLS
+- Phase 1 แรกควรลดการเก็บข้อมูลส่วนตัวให้มากที่สุด
+- ถ้าใช้ GPS ให้ใช้เพื่อคำนวณผลใน session และไม่บันทึกพิกัดส่วนตัวโดยไม่จำเป็น
+- ถ้าอนาคตเก็บพิกัดหรือข้อมูลผู้ใช้ ต้องมี consent และ Privacy Policy
+- ข้อมูลผู้ใช้ใน Phase ถัดไปต้องอยู่ใต้ RLS
 - ข้อมูล hotspot ใน Phase 2 ต้อง private หรือ aggregate by default
 
 ## Acceptance Criteria Phase 1
 
 - Dashboard โหลดสมบูรณ์ภายใน 3 วินาทีบน 4G
 - ผู้ใช้ชาวประมงพื้นบ้านเห็น Safe Score ได้ภายใน 2 tap จาก home screen
+- ผู้ใช้ดูผล Phase 1 ได้โดยไม่ต้องสมัครสมาชิกหรือ login
 - Edge Function ดึงข้อมูลจาก Open-Meteo เสร็จภายใน 10 วินาที
 - แสดง forecast 7 วัน และรายชั่วโมง 48 ชั่วโมงแรก
 - แสดง Safe Score สีเขียว/เหลือง/แดง พร้อมข้อความภาษาไทย
@@ -253,10 +261,12 @@ Legal/privacy:
 - จะเริ่มด้วย Open-Meteo อย่างเดียว หรือเตรียม WorldTides/TMD ตั้งแต่ schema แรก
 - จะเลือก map library อะไรสำหรับเลือกพิกัด
 - ข้อความ disclaimer ภาษาไทยที่ใช้จริงควรเขียนแบบไหนให้ชัดแต่ไม่ทำให้ผู้ใช้กลัวเกินไป
+- หลัง Phase 1 แรก จะเริ่มเก็บ favorite zone แบบ local-only ก่อน หรือค่อยเพิ่ม account/user profile
 
 ## Phase 1 ไม่ควรทำตอนนี้
 
 - AI ทำนายชนิดปลา
+- ระบบสมัครสมาชิก/login เป็น requirement หลัก
 - Marketplace
 - Cold Chain
 - FinTech
