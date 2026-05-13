@@ -1,73 +1,35 @@
-# React + TypeScript + Vite
+# FishSence
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+FishSence / FishSense is a coastal fishing safety web app for Thai fishermen.
+Phase 1 focuses on showing marine weather, tide/current context, and a
+rule-based Safe Score before departure.
 
-Currently, two official plugins are available:
+## Phase 1
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- React + Vite + TypeScript frontend
+- Supabase backend/BaaS
+- Fixed pilot coastal zones such as Songkhla and Ranong
+- Scheduled weather refresh every 3 hours
+- Open-Meteo Marine + Forecast data
+- TMD official warning integration planned through Supabase Edge Functions
+- No login required for the first Phase 1 dashboard
 
-## React Compiler
+See:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- [Project context](./PROJECT_CONTEXT.md)
+- [System diagrams](./diagram/README.md)
+- [Phase 1 docs](./Docs/README.md)
 
-## Expanding the ESLint configuration
+## License
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+This project is licensed under the Business Source License 1.1 (`BUSL-1.1`).
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+You may view, copy, modify, and redistribute the code for personal,
+educational, research, evaluation, development, testing, and other
+non-commercial purposes.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Commercial use, production use for commercial advantage, paid services, hosted
+services, and client work require a separate commercial license from the
+licensor.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+See [LICENSE](./LICENSE) for the full terms.
