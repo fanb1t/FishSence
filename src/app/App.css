@@ -1,0 +1,101 @@
+.app-shell {
+  width: min(100% - 32px, 960px);
+  margin: 0 auto;
+  padding: 32px 0;
+}
+
+.zone-selection {
+  display: grid;
+  gap: 20px;
+}
+
+.zone-selection__header {
+  display: grid;
+  gap: 8px;
+}
+
+.zone-selection__header h2,
+.zone-selection__header p {
+  margin: 0;
+}
+
+.zone-selection__eyebrow {
+  color: #0f766e;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.zone-selector {
+  display: grid;
+  gap: 12px;
+}
+
+.zone-option {
+  display: grid;
+  gap: 6px;
+  width: 100%;
+  padding: 16px;
+  color: #172554;
+  text-align: left;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.zone-option:hover {
+  border-color: #0f766e;
+}
+
+.zone-option:focus-visible {
+  outline: 3px solid #99f6e4;
+  outline-offset: 2px;
+}
+
+.zone-option.is-selected {
+  background: #ecfeff;
+  border-color: #0f766e;
+}
+
+.zone-option__name {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.zone-option__province,
+.zone-option__description {
+  font-size: 14px;
+}
+
+.zone-option__province {
+  color: #0f766e;
+  font-weight: 700;
+}
+
+.zone-option__description {
+  color: #475569;
+}
+
+.selected-zone {
+  display: grid;
+  gap: 4px;
+  padding: 16px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+}
+
+.selected-zone span {
+  color: #64748b;
+  font-size: 13px;
+}
+
+.selected-zone strong {
+  color: #172554;
+  font-size: 20px;
+}
+
+.selected-zone p {
+  margin: 0;
+  color: #475569;
+}
