@@ -57,6 +57,69 @@ Phase 1 แรกไม่ต้องมีระบบสมัครสมา
 - `zod` สำหรับ validate/normalize API response และ input
 - map library ค่อยเลือกเมื่อจะทำ UX เลือกพิกัดจริง เช่น Leaflet หรือ MapLibre
 
+## โครงสร้างโฟลเดอร์ React ตามฟีเจอร์
+
+Phase 1 ควรแยกงานฝั่ง React ตามฟีเจอร์หลักของ dashboard ไม่ใช่แยกตามชนิดไฟล์อย่างเดียว เพื่อให้แต่ละส่วนพัฒนาและทดสอบได้ชัดเจน
+
+ฟีเจอร์หลักของ Phase 1:
+
+1. `zone-selection`: เลือกพื้นที่ชายฝั่งหรือ pilot zone เช่น สงขลา/ระนอง และจัดการพื้นที่ล่าสุดใน local storage
+2. `risk-summary`: แสดง Safe Score, risk level, ข้อความสรุปภาษาไทย, hard stop และ reason 3 อันดับแรก
+3. `marine-conditions`: แสดงคลื่น, swell, sea level, กระแสน้ำ และข้อมูลทะเลที่เกี่ยวข้อง
+4. `weather-conditions`: แสดงลม, ลมกระโชก, ฝน, พายุ, visibility, pressure และ weather code
+5. `forecast`: แสดงพยากรณ์รายชั่วโมง 48 ชั่วโมงแรก และสรุปรายวัน 7 วัน
+6. `data-status`: จัดการ loading/error/fallback/stale state, เวลาอัปเดตล่าสุด และ disclaimer
+
+โครงสร้างที่แนะนำ:
+
+```text
+src/
+  app/
+    App.tsx
+    routes/
+  features/
+    zone-selection/
+      components/
+      hooks/
+      types.ts
+    risk-summary/
+      components/
+      hooks/
+      types.ts
+    marine-conditions/
+      components/
+      hooks/
+      types.ts
+    weather-conditions/
+      components/
+      hooks/
+      types.ts
+    forecast/
+      components/
+      hooks/
+      types.ts
+    data-status/
+      components/
+      hooks/
+      types.ts
+  services/
+    supabase/
+    dashboard-data/
+  shared/
+    components/
+    constants/
+    types/
+    utils/
+  assets/
+```
+
+หลักการใช้งาน:
+
+- `features/` เก็บ UI, hooks และ type เฉพาะฟีเจอร์นั้น
+- `services/` เก็บโค้ดเชื่อม Supabase, query dashboard data และ data adapter
+- `shared/` เก็บ component, type, util และ constant ที่ใช้ร่วมกันหลายฟีเจอร์
+- `app/` เก็บ entry/layout/routing ของแอป ไม่ควรใส่ business logic หนักในนี้
+
 ## API ที่ต้องรู้
 
 Primary source:

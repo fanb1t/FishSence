@@ -56,6 +56,7 @@ Phase 1 แรก:
 
 ## Important Decisions
 
+- Phase 1 frontend จะแยกโครงสร้าง React ตาม feature folders หลัก 6 กลุ่ม: `zone-selection`, `risk-summary`, `marine-conditions`, `weather-conditions`, `forecast`, และ `data-status`
 - Phase 1 เริ่มจาก safety/weather risk assessment ก่อน ไม่เริ่มจาก AI
 - Pilot area แรกใช้พื้นที่ตายตัว เช่น สงขลาและระนอง ให้ผู้ใช้เลือกบริเวณของตัวเองจากรายการ `coastal_zones`
 - ระบบดึงข้อมูลล่วงหน้าทุก 3 ชั่วโมงเฉพาะ `coastal_zones` ที่กำหนดไว้
@@ -93,6 +94,7 @@ Repo path: project root ของ `FishSence`
 
 - เป้าหมาย Phase 1
 - stack ที่ควรใช้
+- โครงสร้างโฟลเดอร์ React ตามฟีเจอร์สำหรับ Phase 1
 - API ที่ต้องรู้
 - Safe Score Phase 1
 - data model เริ่มต้น
@@ -175,13 +177,14 @@ git remote set-url origin https://github.com/fanb1t/FishSence.git
 ลำดับถัดไปที่ควรทำ:
 
 1. อ่าน diagram ตามลำดับใน `diagram/`
-2. แตก system design จาก diagram เป็นเอกสารละเอียดใน `Docs/phase1-system-design.md`
-3. ออกแบบ data model จริงของ Phase 1
-4. ออกแบบ Safe Score engine แบบ rule-based
-5. ออกแบบ Open-Meteo + TMD integration และ normalized data shape
-6. ออกแบบ dashboard mobile-first
-7. ตั้งค่า Supabase project และ migration
-8. เพิ่ม Supabase client/Edge Function หลัง design ชัดแล้ว
+2. สร้างโครงสร้าง `src/app`, `src/features`, `src/services`, และ `src/shared` ตาม feature folders ที่บันทึกไว้ใน `Docs/README.md`
+3. แตก system design จาก diagram เป็นเอกสารละเอียดใน `Docs/phase1-system-design.md`
+4. ออกแบบ data model จริงของ Phase 1
+5. ออกแบบ Safe Score engine แบบ rule-based
+6. ออกแบบ Open-Meteo + TMD integration และ normalized data shape
+7. ออกแบบ dashboard mobile-first
+8. ตั้งค่า Supabase project และ migration
+9. เพิ่ม Supabase client/Edge Function หลัง design ชัดแล้ว
 
 ## Working Reminder
 
